@@ -51,7 +51,7 @@ class ConvertCharset
             return $promise->then(
                 function (ResponseInterface $response) {
 
-                    $contentType = $response->getHeader('Content-Type')[0] ?? '';
+                    $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
                     }
