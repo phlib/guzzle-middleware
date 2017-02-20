@@ -1,0 +1,38 @@
+{
+    "name": "phlib/guzzle-middleware",
+    "description": "Guzzle Middleware: absolute urls, convert charset",
+    "type": "library",
+    "license": "LGPL-3.0",
+    "homepage": "https://github.com/phlib/guzzle-middleware",
+    "keywords": [
+        "guzzle",
+        "middlware",
+        "absoluteurls",
+        "charset"
+    ],
+    "authors": [
+        {
+            "name": "James Dempster",
+            "email": "james.dempster@emailcenteruk.com"
+        }
+    ],
+    "require": {
+        "php": "^7",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.2",
+        "sabre/uri": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phlib\\Guzzle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phlib\\Guzzle\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}
