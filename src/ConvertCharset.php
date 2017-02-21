@@ -18,27 +18,12 @@ class ConvertCharset
     /**
      * @var string
      */
-    private $charset;
-
-    /**
-     * @var string
-     */
     private $headerRe = '/(charset=)([a-z0-9][a-z0-9-]+)(.*)/i';
 
     /**
      * @var string
      */
     private $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
-
-    /**
-     * ConvertCharset constructor.
-     *
-     * @param string $charset
-     */
-    public function __construct(string $charset = 'utf8')
-    {
-        $this->charset = $charset;
-    }
 
     /**
      * @param callable $handler
@@ -49,17 +34,21 @@ class ConvertCharset
         return function (RequestInterface $request, $options) use ($handler) {
             $promise = $handler($request, $options);
             return $promise->then(
-                function (ResponseInterface $response) {
+                function (ResponseInterface $response) use ($options) {
 
-                    $contentType = $response->getHeaderLine('Content-Type');
+                    $contentType = $response->getHeader('Content-Type')[0] ?? '';
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
                     }
 
+                    $toCharset = $options['convert_charset'] ?? 'UTF-8';
+
                     return $this->rewriteCharset(
                         $this->convertEncoding(
-                            $response
-                        )
+                            $response,
+                            $toCharset
+                        ),
+                        $toCharset
                     );
                 }
             );
@@ -68,15 +57,16 @@ class ConvertCharset
 
     /**
      * @param ResponseInterface $response
+     * @param string $toCharset
      * @return ResponseInterface
      */
-    private function convertEncoding(ResponseInterface $response): ResponseInterface
+    private function convertEncoding(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         $fromCharset = $this->getCharset($response);
 
         $content  = mb_convert_encoding(
             (string)$response->getBody(),
-            $this->charset,
+            $toCharset,
             $fromCharset
         );
 
@@ -85,21 +75,22 @@ class ConvertCharset
 
     /**
      * @param ResponseInterface $response
+     * @param string $toCharset
      * @return ResponseInterface
      */
-    private function rewriteCharset(ResponseInterface $response): ResponseInterface
+    private function rewriteCharset(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         if ($response->hasHeader('Content-Type')) {
             $headers = $response->getHeader('Content-Type');
             $newHeaders = [];
             foreach ($headers as $header) {
-                $newHeaders[] = preg_replace($this->headerRe, "\$1{$this->charset}\$3", $header);
+                $newHeaders[] = preg_replace($this->headerRe, "\$1{$toCharset}\$3", $header);
             }
             $response = $response->withHeader('Content-Type', $newHeaders);
         }
 
         $content = (string)$response->getBody();
-        $content = preg_replace($this->metaRe, "\$1{$this->charset}\$3", $content);
+        $content = preg_replace($this->metaRe, "\$1{$toCharset}\$3", $content);
 
         return $response->withBody(stream_for($content));
     }

@@ -21,8 +21,11 @@ class ConvertCharsetTest extends \PHPUnit_Framework_TestCase
         $response = new Response(200, [ 'Content-Type' => 'text/html' ], file_get_contents($preFile));
 
         $handler = new HandlerStack(new MockHandler([$response]));
-        $handler->push(new ConvertCharset($toCharset));
-        $client = new HttpClient(['handler' => $handler]);
+        $handler->push(new ConvertCharset());
+        $client = new HttpClient([
+            'convert_charset' => $toCharset,
+            'handler'         => $handler
+        ]);
         $response = $client->get('http://www.example.com/');
 
         $this->assertSame(
@@ -162,7 +165,7 @@ class ConvertCharsetTest extends \PHPUnit_Framework_TestCase
         ], file_get_contents($preFile));
 
         $handler = new HandlerStack(new MockHandler([$response]));
-        $handler->push(new ConvertCharset('UTF-8'));
+        $handler->push(new ConvertCharset());
         $client = new HttpClient(['handler' => $handler]);
         $response = $client->get('http://www.example.com/');
 
