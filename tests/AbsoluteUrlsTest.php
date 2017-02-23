@@ -71,7 +71,7 @@ class AbsoluteUrlsTest extends TestCase
             [
                 'http://example.com',
                 '<a href="#">',
-                '<a href="http://example.com/#">'
+                '<a href="http://example.com/">'
             ],
             [
                 'http://example.com/test1/test2/tmp.html',
