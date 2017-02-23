@@ -7,8 +7,9 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 
-class ConvertCharsetTest extends \PHPUnit_Framework_TestCase
+class ConvertCharsetTest extends TestCase
 {
     /**
      * @dataProvider metaProvider
