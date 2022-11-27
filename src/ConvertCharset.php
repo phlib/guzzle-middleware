@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phlib\Guzzle;
@@ -26,7 +27,6 @@ class ConvertCharset
     private $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
 
     /**
-     * @param callable $handler
      * @return \Closure
      */
     public function __invoke(callable $handler)
@@ -35,7 +35,6 @@ class ConvertCharset
             $promise = $handler($request, $options);
             return $promise->then(
                 function (ResponseInterface $response) use ($options) {
-
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
@@ -55,16 +54,11 @@ class ConvertCharset
         };
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $toCharset
-     * @return ResponseInterface
-     */
     private function convertEncoding(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         $fromCharset = $this->getCharset($response);
 
-        $content  = mb_convert_encoding(
+        $content = mb_convert_encoding(
             (string)$response->getBody(),
             $toCharset,
             $fromCharset
@@ -73,11 +67,6 @@ class ConvertCharset
         return $response->withBody(stream_for($content));
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $toCharset
-     * @return ResponseInterface
-     */
     private function rewriteCharset(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         if ($response->hasHeader('Content-Type')) {
@@ -96,8 +85,6 @@ class ConvertCharset
     }
 
     /**
-     * @param ResponseInterface $response
-     * @return string
      * @throws \Exception
      */
     private function getCharset(ResponseInterface $response): string

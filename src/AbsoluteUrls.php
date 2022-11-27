@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phlib\Guzzle;
 
-use Sabre\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Sabre\Uri;
 
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -17,7 +18,6 @@ use function GuzzleHttp\Psr7\stream_for;
 class AbsoluteUrls
 {
     /**
-     * @param callable $handler
      * @return \Closure
      */
     public function __invoke(callable $handler)
@@ -26,7 +26,6 @@ class AbsoluteUrls
             $promise = $handler($request, $options);
             return $promise->then(
                 function (ResponseInterface $response) use ($request) {
-
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
@@ -45,11 +44,6 @@ class AbsoluteUrls
         };
     }
 
-    /**
-     * @param string $content
-     * @param string $baseUrl
-     * @return string
-     */
     private function transform(string $content, string $baseUrl): string
     {
         $baseUrl = Uri\normalize($baseUrl);
