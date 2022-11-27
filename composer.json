@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7",
+        "php": "^7.4",
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^6.2",
         "sabre/uri": "^2.1.1"
