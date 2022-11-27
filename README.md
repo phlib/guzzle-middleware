@@ -1,9 +1,10 @@
 # phlib/guzzle-middleware
 
-[![Build Status](https://img.shields.io/travis/phlib/guzzle-middleware/master.svg?style=flat-square)](https://travis-ci.org/phlib/guzzle-middleware)
-[![Latest Stable Version](https://img.shields.io/packagist/v/phlib/guzzle-middleware.svg)](https://packagist.org/packages/phlib/guzzle-middleware)
-[![Total Downloads](https://img.shields.io/packagist/dt/phlib/guzzle-middleware.svg)](https://packagist.org/packages/phlib/guzzle-middleware)
-![Licence](https://img.shields.io/github/license/phlib/guzzle-middleware.svg?style=flat-square)
+[![Code Checks](https://img.shields.io/github/workflow/status/phlib/guzzle-middleware/CodeChecks?logo=github)](https://github.com/phlib/guzzle-middleware/actions/workflows/code-checks.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/phlib/guzzle-middleware.svg?logo=codecov)](https://codecov.io/gh/phlib/guzzle-middleware)
+[![Latest Stable Version](https://img.shields.io/packagist/v/phlib/guzzle-middleware.svg?logo=packagist)](https://packagist.org/packages/phlib/guzzle-middleware)
+[![Total Downloads](https://img.shields.io/packagist/dt/phlib/guzzle-middleware.svg?logo=packagist)](https://packagist.org/packages/phlib/guzzle-middleware)
+![Licence](https://img.shields.io/github/license/phlib/guzzle-middleware.svg)
 
 Guzzle Middleware
 
