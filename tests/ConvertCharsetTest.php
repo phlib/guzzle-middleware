@@ -15,7 +15,7 @@ class ConvertCharsetTest extends TestCase
     /**
      * @dataProvider metaProvider
      */
-    public function testMeta(string $toCharset, string $preFile, string $postFile)
+    public function testMeta(string $toCharset, string $preFile, string $postFile): void
     {
         $response = new Response(200, [
             'Content-Type' => 'text/html',
@@ -35,7 +35,7 @@ class ConvertCharsetTest extends TestCase
         );
     }
 
-    public function metaProvider()
+    public function metaProvider(): array
     {
         return [
             [
@@ -156,7 +156,7 @@ class ConvertCharsetTest extends TestCase
     /**
      * @dataProvider headerProvider
      */
-    public function testHeader(string $header, string $preFile, string $postFile)
+    public function testHeader(string $header, string $preFile, string $postFile): void
     {
         $response = new Response(200, [
             'Content-Type' => $header,
@@ -176,7 +176,7 @@ class ConvertCharsetTest extends TestCase
         );
     }
 
-    public function headerProvider()
+    public function headerProvider(): array
     {
         return [
             [

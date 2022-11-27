@@ -16,7 +16,7 @@ class AbsoluteUrlsTest extends TestCase
     /**
      * @dataProvider transformFullPageProvider
      */
-    public function testTransformFullPage(string $baseUrl, string $preFile, string $postFile)
+    public function testTransformFullPage(string $baseUrl, string $preFile, string $postFile): void
     {
         $response = new Response(200, [
             'Content-Type' => 'text/html',
@@ -35,7 +35,7 @@ class AbsoluteUrlsTest extends TestCase
         );
     }
 
-    public function transformFullPageProvider()
+    public function transformFullPageProvider(): array
     {
         return [
             [
@@ -49,7 +49,7 @@ class AbsoluteUrlsTest extends TestCase
     /**
      * @dataProvider transformProvider
      */
-    public function testTransform(string $baseUrl, string $source, string $expected)
+    public function testTransform(string $baseUrl, string $source, string $expected): void
     {
         $response = new Response(200, [
             'Content-Type' => 'text/html',
@@ -68,7 +68,7 @@ class AbsoluteUrlsTest extends TestCase
         );
     }
 
-    public function transformProvider()
+    public function transformProvider(): array
     {
         return [
             [
@@ -269,7 +269,7 @@ class AbsoluteUrlsTest extends TestCase
         ];
     }
 
-    public function onlyTextHtmlProvider()
+    public function onlyTextHtmlProvider(): array
     {
         return [
             [
@@ -294,7 +294,7 @@ class AbsoluteUrlsTest extends TestCase
     /**
      * @dataProvider onlyTextHtmlProvider
      */
-    public function testOnlyTextHtml(string $contentType, string $assertion)
+    public function testOnlyTextHtml(string $contentType, string $assertion): void
     {
         $baseUrl = 'http://example.com/path/to/tmp.html';
         $source = '<a href="page2.html">';

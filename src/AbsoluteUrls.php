@@ -17,15 +17,12 @@ use function GuzzleHttp\Psr7\stream_for;
  */
 class AbsoluteUrls
 {
-    /**
-     * @return \Closure
-     */
-    public function __invoke(callable $handler)
+    public function __invoke(callable $handler): \Closure
     {
         return function (RequestInterface $request, $options) use ($handler) {
             $promise = $handler($request, $options);
             return $promise->then(
-                function (ResponseInterface $response) use ($request) {
+                function (ResponseInterface $response) use ($request): ResponseInterface {
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
@@ -57,7 +54,7 @@ class AbsoluteUrls
 
         return preg_replace_callback(
             $search,
-            function (array $matches) use ($baseUrl) {
+            function (array $matches) use ($baseUrl): string {
                 $path = Uri\resolve($baseUrl, $matches[2]);
                 return $matches[1] . $path . $matches[3];
             },

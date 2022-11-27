@@ -16,25 +16,16 @@ use function GuzzleHttp\Psr7\stream_for;
  */
 class ConvertCharset
 {
-    /**
-     * @var string
-     */
-    private $headerRe = '/(charset=)([a-z0-9][a-z0-9-]+)(.*)/i';
+    private string $headerRe = '/(charset=)([a-z0-9][a-z0-9-]+)(.*)/i';
 
-    /**
-     * @var string
-     */
-    private $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
+    private string $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
 
-    /**
-     * @return \Closure
-     */
-    public function __invoke(callable $handler)
+    public function __invoke(callable $handler): \Closure
     {
         return function (RequestInterface $request, $options) use ($handler) {
             $promise = $handler($request, $options);
             return $promise->then(
-                function (ResponseInterface $response) use ($options) {
+                function (ResponseInterface $response) use ($options): ResponseInterface {
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
@@ -84,9 +75,6 @@ class ConvertCharset
         return $response->withBody(stream_for($content));
     }
 
-    /**
-     * @throws \Exception
-     */
     private function getCharset(ResponseInterface $response): string
     {
         if ($response->hasHeader('Content-Type')) {
