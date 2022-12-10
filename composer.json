@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.4",
         "ext-mbstring": "*",
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "^7",
         "sabre/uri": "^3"
     },
     "autoload": {

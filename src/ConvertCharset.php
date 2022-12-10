@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Phlib\Guzzle;
 
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * Class ConvertCharset
@@ -55,7 +54,7 @@ class ConvertCharset
             $fromCharset
         );
 
-        return $response->withBody(stream_for($content));
+        return $response->withBody(Utils::streamFor($content));
     }
 
     private function rewriteCharset(ResponseInterface $response, string $toCharset): ResponseInterface
@@ -72,7 +71,7 @@ class ConvertCharset
         $content = (string)$response->getBody();
         $content = preg_replace($this->metaRe, "\$1{$toCharset}\$3", $content);
 
-        return $response->withBody(stream_for($content));
+        return $response->withBody(Utils::streamFor($content));
     }
 
     private function getCharset(ResponseInterface $response): string

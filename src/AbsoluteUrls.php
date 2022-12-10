@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Phlib\Guzzle;
 
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Sabre\Uri;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * Class AbsoluteUrls
@@ -29,7 +28,7 @@ class AbsoluteUrls
                     }
 
                     return $response->withBody(
-                        stream_for(
+                        Utils::streamFor(
                             $this->transform(
                                 (string)$response->getBody(),
                                 (string)$request->getUri()
