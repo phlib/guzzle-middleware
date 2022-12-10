@@ -1,12 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phlib\Guzzle;
 
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * Class ConvertCharset
@@ -15,27 +15,16 @@ use function GuzzleHttp\Psr7\stream_for;
  */
 class ConvertCharset
 {
-    /**
-     * @var string
-     */
-    private $headerRe = '/(charset=)([a-z0-9][a-z0-9-]+)(.*)/i';
+    private string $headerRe = '/(charset=)([a-z0-9][a-z0-9-]+)(.*)/i';
 
-    /**
-     * @var string
-     */
-    private $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
+    private string $metaRe = '/(<meta[^>]+charset=["\']?)([a-z][a-z0-9-]+)(["\']?[^>]*>)/i';
 
-    /**
-     * @param callable $handler
-     * @return \Closure
-     */
-    public function __invoke(callable $handler)
+    public function __invoke(callable $handler): \Closure
     {
         return function (RequestInterface $request, $options) use ($handler) {
             $promise = $handler($request, $options);
             return $promise->then(
-                function (ResponseInterface $response) use ($options) {
-
+                function (ResponseInterface $response) use ($options): ResponseInterface {
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
@@ -55,29 +44,19 @@ class ConvertCharset
         };
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $toCharset
-     * @return ResponseInterface
-     */
     private function convertEncoding(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         $fromCharset = $this->getCharset($response);
 
-        $content  = mb_convert_encoding(
+        $content = mb_convert_encoding(
             (string)$response->getBody(),
             $toCharset,
             $fromCharset
         );
 
-        return $response->withBody(stream_for($content));
+        return $response->withBody(Utils::streamFor($content));
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $toCharset
-     * @return ResponseInterface
-     */
     private function rewriteCharset(ResponseInterface $response, string $toCharset): ResponseInterface
     {
         if ($response->hasHeader('Content-Type')) {
@@ -92,14 +71,9 @@ class ConvertCharset
         $content = (string)$response->getBody();
         $content = preg_replace($this->metaRe, "\$1{$toCharset}\$3", $content);
 
-        return $response->withBody(stream_for($content));
+        return $response->withBody(Utils::streamFor($content));
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @return string
-     * @throws \Exception
-     */
     private function getCharset(ResponseInterface $response): string
     {
         if ($response->hasHeader('Content-Type')) {
@@ -116,6 +90,6 @@ class ConvertCharset
             return $matches[2];
         }
 
-        return mb_detect_encoding((string)$response->getBody());
+        return mb_detect_encoding((string)$response->getBody(), mb_detect_order(), true);
     }
 }

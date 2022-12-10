@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add support for PHP v8 .
+- Type declarations have been added to all method parameters and return types
+  where possible.
+### Removed
+- **BC break**: Removed support for PHP versions <= v7.3 as they are no longer
+[actively supported](https://php.net/supported-versions.php) by the PHP project.
 
 ## [1.0.1] - 2021-02-30
 ### Removed

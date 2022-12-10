@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phlib\Guzzle;
@@ -13,19 +14,18 @@ class ConvertCharsetTest extends TestCase
 {
     /**
      * @dataProvider metaProvider
-     * @param string $toCharset
-     * @param string $preFile
-     * @param string $postFile
      */
-    public function testMeta(string $toCharset, string $preFile, string $postFile)
+    public function testMeta(string $toCharset, string $preFile, string $postFile): void
     {
-        $response = new Response(200, [ 'Content-Type' => 'text/html' ], file_get_contents($preFile));
+        $response = new Response(200, [
+            'Content-Type' => 'text/html',
+        ], file_get_contents($preFile));
 
         $handler = new HandlerStack(new MockHandler([$response]));
         $handler->push(new ConvertCharset());
         $client = new HttpClient([
             'convert_charset' => $toCharset,
-            'handler'         => $handler
+            'handler' => $handler,
         ]);
         $response = $client->get('http://www.example.com/');
 
@@ -35,7 +35,7 @@ class ConvertCharsetTest extends TestCase
         );
     }
 
-    public function metaProvider()
+    public function metaProvider(): array
     {
         return [
             [
@@ -155,19 +155,18 @@ class ConvertCharsetTest extends TestCase
 
     /**
      * @dataProvider headerProvider
-     * @param string $header
-     * @param string $preFile
-     * @param string $postFile
      */
-    public function testHeader(string $header, string $preFile, string $postFile)
+    public function testHeader(string $header, string $preFile, string $postFile): void
     {
         $response = new Response(200, [
-            'Content-Type' => $header
+            'Content-Type' => $header,
         ], file_get_contents($preFile));
 
         $handler = new HandlerStack(new MockHandler([$response]));
         $handler->push(new ConvertCharset());
-        $client = new HttpClient(['handler' => $handler]);
+        $client = new HttpClient([
+            'handler' => $handler,
+        ]);
         $response = $client->get('http://www.example.com/');
 
         $this->assertSame(
@@ -177,7 +176,7 @@ class ConvertCharsetTest extends TestCase
         );
     }
 
-    public function headerProvider()
+    public function headerProvider(): array
     {
         return [
             [

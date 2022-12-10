@@ -1,13 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phlib\Guzzle;
 
-use Sabre\Uri;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
-use function GuzzleHttp\Psr7\stream_for;
+use Sabre\Uri;
 
 /**
  * Class AbsoluteUrls
@@ -16,24 +16,19 @@ use function GuzzleHttp\Psr7\stream_for;
  */
 class AbsoluteUrls
 {
-    /**
-     * @param callable $handler
-     * @return \Closure
-     */
-    public function __invoke(callable $handler)
+    public function __invoke(callable $handler): \Closure
     {
         return function (RequestInterface $request, $options) use ($handler) {
             $promise = $handler($request, $options);
             return $promise->then(
-                function (ResponseInterface $response) use ($request) {
-
+                function (ResponseInterface $response) use ($request): ResponseInterface {
                     $contentType = $response->getHeaderLine('Content-Type');
                     if (!preg_match('/^text\/html(?:[\t ]*;.*)?$/i', $contentType)) {
                         return $response;
                     }
 
                     return $response->withBody(
-                        stream_for(
+                        Utils::streamFor(
                             $this->transform(
                                 (string)$response->getBody(),
                                 (string)$request->getUri()
@@ -45,11 +40,6 @@ class AbsoluteUrls
         };
     }
 
-    /**
-     * @param string $content
-     * @param string $baseUrl
-     * @return string
-     */
     private function transform(string $content, string $baseUrl): string
     {
         $baseUrl = Uri\normalize($baseUrl);
@@ -63,7 +53,7 @@ class AbsoluteUrls
 
         return preg_replace_callback(
             $search,
-            function (array $matches) use ($baseUrl) {
+            function (array $matches) use ($baseUrl): string {
                 $path = Uri\resolve($baseUrl, $matches[2]);
                 return $matches[1] . $path . $matches[3];
             },
