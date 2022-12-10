@@ -91,6 +91,6 @@ class ConvertCharset
             return $matches[2];
         }
 
-        return mb_detect_encoding((string)$response->getBody());
+        return mb_detect_encoding((string)$response->getBody(), mb_detect_order(), true);
     }
 }
