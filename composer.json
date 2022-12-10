@@ -23,7 +23,7 @@
         "php": "^7.4",
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^6.2",
-        "sabre/uri": "^2.1.1"
+        "sabre/uri": "^3"
     },
     "autoload": {
         "psr-4": {
