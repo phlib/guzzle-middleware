@@ -1,6 +1,6 @@
 # phlib/guzzle-middleware
 
-[![Code Checks](https://img.shields.io/github/workflow/status/phlib/guzzle-middleware/CodeChecks?logo=github)](https://github.com/phlib/guzzle-middleware/actions/workflows/code-checks.yml)
+[![Code Checks](https://img.shields.io/github/actions/workflow/status/phlib/guzzle-middleware/code-checks.yml?logo=github)](https://github.com/phlib/guzzle-middleware/actions/workflows/code-checks.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/phlib/guzzle-middleware.svg?logo=codecov)](https://codecov.io/gh/phlib/guzzle-middleware)
 [![Latest Stable Version](https://img.shields.io/packagist/v/phlib/guzzle-middleware.svg?logo=packagist)](https://packagist.org/packages/phlib/guzzle-middleware)
 [![Total Downloads](https://img.shields.io/packagist/dt/phlib/guzzle-middleware.svg?logo=packagist)](https://packagist.org/packages/phlib/guzzle-middleware)
