@@ -11,6 +11,9 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @package Phlib\Guzzle-Middleware
+ */
 class AbsoluteUrlsTest extends TestCase
 {
     /**

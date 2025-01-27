@@ -9,9 +9,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class ConvertCharset
- *
- * @package Phlib\Guzzle
+ * @package Phlib\Guzzle-Middleware
  */
 class ConvertCharset
 {

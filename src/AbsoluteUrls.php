@@ -10,9 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Sabre\Uri;
 
 /**
- * Class AbsoluteUrls
- *
- * @package Phlib\Guzzle
+ * @package Phlib\Guzzle-Middleware
  */
 class AbsoluteUrls
 {

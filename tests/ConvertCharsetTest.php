@@ -10,6 +10,9 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @package Phlib\Guzzle-Middleware
+ */
 class ConvertCharsetTest extends TestCase
 {
     /**
